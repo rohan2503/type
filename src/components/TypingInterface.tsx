@@ -103,19 +103,21 @@ export default function TypingInterface() {
       setErrors(newErrors);
 
       // Update stats
-      const timeElapsed = (Date.now() - startTime) / 1000;
-      const wordsTyped = newInput.trim().split(/\s+/).length;
-      const wpm = timeElapsed > 0 ? Math.round((wordsTyped / timeElapsed) * 60) : 0;
-      const accuracy = newInput.length > 0 
-        ? Math.round(((newInput.length - newErrors) / newInput.length) * 100) 
-        : 100;
+      if (startTime) {  
+        const timeElapsed = (Date.now() - startTime) / 1000;
+        const wordsTyped = newInput.trim().split(/\s+/).length;
+        const wpm = timeElapsed > 0 ? Math.round((wordsTyped / timeElapsed) * 60) : 0;
+        const accuracy = newInput.length > 0 
+          ? Math.round(((newInput.length - newErrors) / newInput.length) * 100) 
+          : 100;
 
-      setStats(prev => ({
-        ...prev,
-        wpm,
-        accuracy,
-        totalTyped: newInput.length
-      }));
+        setStats(prev => ({
+          ...prev,
+          wpm,
+          accuracy,
+          totalTyped: newInput.length
+        }));
+      }
 
       // Check if test is complete
       if (newInput.length === text.length) {
