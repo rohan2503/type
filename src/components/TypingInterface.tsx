@@ -136,10 +136,10 @@ export default function TypingInterface() {
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    if (isStarted && !isCompleted) {
+    if (isStarted && !isCompleted && startTime !== null) {
       interval = setInterval(() => {
-        setStats(prev => ({ ...prev, timeLeft: Math.max(0, INITIAL_TIME - Math.floor((Date.now() - startTime!) / 1000)) }));
-        setElapsedTime(Math.floor((Date.now() - startTime!) / 1000));
+        setStats(prev => ({ ...prev, timeLeft: Math.max(0, INITIAL_TIME - Math.floor((Date.now() - startTime) / 1000)) }));
+        setElapsedTime(Math.floor((Date.now() - startTime) / 1000));
       }, 1000);
     }
     return () => clearInterval(interval);
