@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Typing Practice App',
+  title: 'typebro',
   description: 'Improve your typing speed and accuracy with real-time feedback',
 }
 
