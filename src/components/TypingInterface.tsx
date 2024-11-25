@@ -128,9 +128,10 @@ export default function TypingInterface() {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    // Prevent backspace
+    // Count backspace as an error and prevent its default behavior
     if (e.key === 'Backspace') {
       e.preventDefault();
+      setErrors(prev => prev + 1);
     }
   };
 
