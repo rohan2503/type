@@ -96,19 +96,24 @@ export default function TypingInterface() {
     if (!isCompleted) {
       setInput(newInput);
       
-      // Count errors (can't be corrected)
-      const newErrors = newInput.split('').reduce((count, char, index) => {
-        return count + (char !== text[index] ? 1 : 0);
-      }, 0);
-      setErrors(newErrors);
+      // Count errors - only for newly typed characters
+      if (newInput.length > input.length) {
+        // New character was typed
+        const lastCharIndex = newInput.length - 1;
+        if (newInput[lastCharIndex] !== text[lastCharIndex]) {
+          setErrors(prev => prev + 1);
+        }
+      }
 
       // Update stats
       if (startTime) {  
         const timeElapsed = (Date.now() - startTime) / 1000;
         const wordsTyped = newInput.trim().split(/\s+/).length;
         const wpm = timeElapsed > 0 ? Math.round((wordsTyped / timeElapsed) * 60) : 0;
+        
+        // Calculate accuracy based on total errors vs total characters typed
         const accuracy = newInput.length > 0 
-          ? Math.round(((newInput.length - newErrors) / newInput.length) * 100) 
+          ? Math.round(((newInput.length - errors) / newInput.length) * 100) 
           : 100;
 
         setStats(prev => ({
@@ -124,14 +129,6 @@ export default function TypingInterface() {
         setIsRunning(false);
         setIsCompleted(true);
       }
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    // Count backspace as an error and prevent its default behavior
-    if (e.key === 'Backspace') {
-      e.preventDefault();
-      setErrors(prev => prev + 1);
     }
   };
 
@@ -327,7 +324,6 @@ export default function TypingInterface() {
         <textarea
           value={input}
           onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
           className="w-full p-6 rounded-2xl bg-white/[0.03] text-white/90 border border-white/[0.05] focus:ring-2 focus:ring-white/[0.08] focus:border-white/[0.08] transition-all duration-300 backdrop-blur-sm font-mono resize-none hover:border-white/[0.08]"
           placeholder={isCompleted ? "Test complete! Click 'Try Again' or 'Next Level'" : "start typing..."}
           rows={3}
