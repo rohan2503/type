@@ -111,9 +111,9 @@ export default function TypingInterface() {
         const wordsTyped = newInput.trim().split(/\s+/).length;
         const wpm = timeElapsed > 0 ? Math.round((wordsTyped / timeElapsed) * 60) : 0;
         
-        // Calculate accuracy based on total errors vs total characters typed
+        // Calculate accuracy as 100 - error percentage
         const accuracy = newInput.length > 0 
-          ? Math.round(((newInput.length - errors) / newInput.length) * 100) 
+          ? Math.round(100 - ((errors / newInput.length) * 100))
           : 100;
 
         setStats(prev => ({
